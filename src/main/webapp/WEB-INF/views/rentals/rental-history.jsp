@@ -1,0 +1,83 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rental History</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📋 Rental History</h2>
+        <a href="/rental/create" class="btn btn-success">+ Rent a Bike</a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-bordered table-hover text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th>Rental ID</th>
+                    <th>User ID</th>
+                    <th>Bike ID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Total Fee (LKR)</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <%
+                    List<String[]> rentals = (List<String[]>) request.getAttribute("rentals");
+                    if (rentals != null && !rentals.isEmpty()) {
+                        for (String[] r : rentals) {
+                %>
+                <tr>
+                    <td><%= r[0] %></td>
+                    <td><%= r[1] %></td>
+                    <td><%= r[2] %></td>
+                    <td><%= r[3] %></td>
+                    <td><%= r[4] %></td>
+                    <td>
+                        <% if (r[5].equals("ACTIVE")) { %>
+                        <span class="badge bg-success">ACTIVE</span>
+                        <% } else if (r[5].equals("RETURNED")) { %>
+                        <span class="badge bg-secondary">RETURNED</span>
+                        <% } else { %>
+                        <span class="badge bg-danger"><%= r[5] %></span>
+                        <% } %>
+                    </td>
+                    <td><%= r[6] %></td>
+                    <td>
+                        <!-- Update button -->
+                        <a href="/rental/update?rentalId=<%= r[0] %>"
+                           class="btn btn-warning btn-sm">Return</a>
+
+                        <!-- Delete button -->
+                        <form action="/rental/delete" method="post"
+                              style="display:inline;"
+                              onsubmit="return confirm('Delete this rental?')">
+                            <input type="hidden" name="rentalId" value="<%= r[0] %>"/>
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <%
+                    }
+                } else {
+                %>
+                <tr>
+                    <td colspan="8" class="text-muted">No rentals found.</td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
