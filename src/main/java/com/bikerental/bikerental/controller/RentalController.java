@@ -14,13 +14,11 @@ import java.util.*;
 @RequestMapping("/rental")
 public class RentalController {
 
-    // SHOW create form
     @GetMapping("/create")
     public String showCreateForm() {
         return "rentals/rent-bike";
     }
 
-    // CREATE
     @PostMapping("/create")
     public String createRental(@RequestParam String userId,
                                @RequestParam String bikeId,
@@ -54,20 +52,17 @@ public class RentalController {
 
         FileHandler.writeRental(rental.toFileString());
 
-        // Success message
         redirectAttributes.addFlashAttribute("success",
                 "Rental created! Bike " + bikeId + " rented for LKR " + fee);
         return "redirect:/rental/view";
     }
 
-    // READ - View all rentals
     @GetMapping("/view")
     public String viewRentals(Model model) {
         model.addAttribute("rentals", FileHandler.readAllRentals());
         return "rentals/rental-history";
     }
 
-    // READ - Search by User ID
     @GetMapping("/search")
     public String searchRentals(@RequestParam(required = false) String userId,
                                 Model model) {
@@ -93,14 +88,12 @@ public class RentalController {
         return "rentals/rental-history";
     }
 
-    // SHOW update form
     @GetMapping("/update")
     public String showUpdateForm(@RequestParam String rentalId, Model model) {
         model.addAttribute("rentalId", rentalId);
         return "rentals/return-bike";
     }
 
-    // UPDATE
     @PostMapping("/update")
     public String updateRental(@RequestParam String rentalId,
                                @RequestParam String status,
@@ -120,7 +113,6 @@ public class RentalController {
         return "redirect:/rental/view";
     }
 
-    // DELETE
     @PostMapping("/delete")
     public String deleteRental(@RequestParam String rentalId,
                                RedirectAttributes redirectAttributes) {
