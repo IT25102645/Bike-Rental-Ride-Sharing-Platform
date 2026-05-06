@@ -14,6 +14,25 @@
         <a href="/rental/create" class="btn btn-success">+ Rent a Bike</a>
     </div>
 
+    <!-- Search Bar -->
+    <div class="card shadow mb-4 p-3">
+        <form action="/rental/search" method="get" class="row g-2 align-items-center">
+            <div class="col-auto">
+                <label class="col-form-label fw-bold">Search by User ID:</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" name="userId" class="form-control"
+                       placeholder="Enter User ID"
+                       value="<%= request.getAttribute("searchId") != null ? request.getAttribute("searchId") : "" %>"/>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="/rental/view" class="btn btn-outline-secondary">Clear</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Rentals Table -->
     <div class="card shadow">
         <div class="card-body">
             <table class="table table-bordered table-hover text-center">
