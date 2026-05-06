@@ -7,6 +7,18 @@ import java.util.List;
 
     public class BikeService {
         private final String FILE_NAME = "bikes.txt";
+        public boolean isIdExists(String id) {
+
+            List<Bike> bikeList = loadBikes();
+
+            for (Bike bike : bikeList) {
+
+                if (bike.getBikeID().equalsIgnoreCase(id)) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         //(Persistence)
         public void saveBikes(List<Bike> bikeList) {

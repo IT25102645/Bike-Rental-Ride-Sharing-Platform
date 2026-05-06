@@ -37,19 +37,45 @@ public class Main {
 
                 switch (choice) {
                     case 1: // Create: Electric Bike
-                        System.out.print("Enter ID: "); String eId = scanner.nextLine();
+                        System.out.println("\n--- Adding Electric Bike ---");
+                        String eId;
+                        while (true) {
+                            System.out.print("Enter ID: ");
+                            eId = scanner.nextLine();
+
+                            if (bikeService.isIdExists(eId)) {
+                                System.out.println("[ERROR] This ID already exists! Please enter a unique ID.");
+                            } else {
+                                break;
+                            }
+                        }
+
                         System.out.print("Enter Model: "); String eModel = scanner.nextLine();
                         System.out.print("Price/hr: "); double ePrice = scanner.nextDouble();
                         System.out.print("Battery Capacity (Ah/Wh): "); int batt = scanner.nextInt();
+
                         bikes.add(new ElectricBike(eId, eModel, ePrice, true, batt));
                         System.out.println("Electric Bike added successfully!");
                         break;
 
                     case 2: // Create: Manual Bike
-                        System.out.print("Enter ID: "); String mId = scanner.nextLine();
+                        System.out.println("\n--- Adding Manual Bike ---");
+                        String mId;
+                        while (true) {
+                            System.out.print("Enter ID: ");
+                            mId = scanner.nextLine();
+
+                            if (bikeService.isIdExists(mId)) {
+                                System.out.println("[ERROR] This ID already exists! Please enter a unique ID.");
+                            } else {
+                                break;
+                            }
+                        }
+
                         System.out.print("Enter Model: "); String mModel = scanner.nextLine();
                         System.out.print("Price/hr: "); double mPrice = scanner.nextDouble();
                         System.out.print("Number of Gears: "); int gears = scanner.nextInt();
+
                         bikes.add(new ManualBike(mId, mModel, mPrice, true, gears));
                         System.out.println("Manual Bike added successfully!");
                         break;
