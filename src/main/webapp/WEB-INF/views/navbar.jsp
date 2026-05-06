@@ -11,12 +11,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">🏠 Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/rental/create">➕ Rent a Bike</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/rental/view">📋 Rental History</a>
-                </li>
             </ul>
         </div>
     </div>
