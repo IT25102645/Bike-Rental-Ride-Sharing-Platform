@@ -8,7 +8,26 @@
 </head>
 <body class="bg-light">
 
+<%@ include file="../navbar.jsp" %>
+
 <div class="container mt-5">
+
+    <!-- Success Message -->
+    <% if (request.getAttribute("success") != null) { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ✅ <%= request.getAttribute("success") %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <% } %>
+
+    <!-- Info Message -->
+    <% if (request.getAttribute("info") != null) { %>
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        ℹ️ <%= request.getAttribute("info") %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <% } %>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>📋 Rental History</h2>
         <a href="/rental/create" class="btn btn-success">+ Rent a Bike</a>
@@ -98,5 +117,6 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

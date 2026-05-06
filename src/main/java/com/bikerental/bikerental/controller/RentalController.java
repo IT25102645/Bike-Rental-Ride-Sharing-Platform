@@ -5,6 +5,7 @@ import com.bikerental.bikerental.util.FileHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -25,23 +26,22 @@ public class RentalController {
                                @RequestParam String bikeId,
                                @RequestParam String rentalType,
                                @RequestParam String endDate,
-                               Model model) {
+                               Model model,
+                               RedirectAttributes redirectAttributes) {
 
         if (!FileHandler.isBikeAvailable(bikeId)) {
-            model.addAttribute("error", "Bike is not available!");
+            model.addAttribute("error", "Bike " + bikeId + " is not available!");
             return "rentals/rent-bike";
         }
 
         String id = "R-" + UUID.randomUUID().toString().substring(0, 6);
         String startDate = LocalDate.now().toString();
 
-        // Calculate duration in days between start and end
         LocalDate start = LocalDate.now();
         LocalDate end = LocalDate.parse(endDate);
         int duration = (int) ChronoUnit.DAYS.between(start, end);
-        if (duration <= 0) duration = 1; // minimum 1
+        if (duration <= 0) duration = 1;
 
-        // Polymorphism: correct subclass chosen based on rental type
         Rental rental;
         if (rentalType.equals("hourly")) {
             rental = new HourlyRental(id, userId, bikeId, startDate, endDate, "ACTIVE");
@@ -49,11 +49,14 @@ public class RentalController {
             rental = new DailyRental(id, userId, bikeId, startDate, endDate, "ACTIVE");
         }
 
-        // Calculate fee using polymorphic method and save it
         double fee = rental.calculateFee(duration);
         rental.setTotalFee(fee);
 
         FileHandler.writeRental(rental.toFileString());
+
+        // Success message
+        redirectAttributes.addFlashAttribute("success",
+                "Rental created! Bike " + bikeId + " rented for LKR " + fee);
         return "redirect:/rental/view";
     }
 
@@ -64,7 +67,7 @@ public class RentalController {
         return "rentals/rental-history";
     }
 
-    // READ - Search rentals by User ID
+    // READ - Search by User ID
     @GetMapping("/search")
     public String searchRentals(@RequestParam(required = false) String userId,
                                 Model model) {
@@ -79,6 +82,10 @@ public class RentalController {
             }
             model.addAttribute("rentals", filtered);
             model.addAttribute("searchId", userId);
+
+            if (filtered.isEmpty()) {
+                model.addAttribute("info", "No rentals found for User ID: " + userId);
+            }
         } else {
             model.addAttribute("rentals", allRentals);
         }
@@ -97,7 +104,8 @@ public class RentalController {
     @PostMapping("/update")
     public String updateRental(@RequestParam String rentalId,
                                @RequestParam String status,
-                               @RequestParam String endDate) {
+                               @RequestParam String endDate,
+                               RedirectAttributes redirectAttributes) {
         List<String[]> rentals = FileHandler.readAllRentals();
         for (String[] r : rentals) {
             if (r[0].equals(rentalId)) {
@@ -106,15 +114,22 @@ public class RentalController {
             }
         }
         FileHandler.rewriteFile(rentals);
+
+        redirectAttributes.addFlashAttribute("success",
+                "Rental " + rentalId + " updated to " + status + " successfully!");
         return "redirect:/rental/view";
     }
 
     // DELETE
     @PostMapping("/delete")
-    public String deleteRental(@RequestParam String rentalId) {
+    public String deleteRental(@RequestParam String rentalId,
+                               RedirectAttributes redirectAttributes) {
         List<String[]> rentals = FileHandler.readAllRentals();
         rentals.removeIf(r -> r[0].equals(rentalId));
         FileHandler.rewriteFile(rentals);
+
+        redirectAttributes.addFlashAttribute("success",
+                "Rental " + rentalId + " deleted successfully!");
         return "redirect:/rental/view";
     }
 }
