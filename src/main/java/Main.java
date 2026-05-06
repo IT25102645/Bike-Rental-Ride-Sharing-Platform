@@ -51,7 +51,21 @@ public class Main {
                         }
 
                         System.out.print("Enter Model: "); String eModel = scanner.nextLine();
-                        System.out.print("Price/hr: "); double ePrice = scanner.nextDouble();
+                        double ePrice;
+                        while (true) {
+                            System.out.print("Price/hr: ");
+                            if (scanner.hasNextDouble()) {
+                                ePrice = scanner.nextDouble();
+                                if (ePrice > 0) {
+                                    break;
+                                } else {
+                                    System.out.println("[ERROR] Price must be a positive value!");
+                                }
+                            } else {
+                                System.out.println("[ERROR] Invalid input! Please enter a number for the price.");
+                                scanner.next();
+                            }
+                        }
                         System.out.print("Battery Capacity (Ah/Wh): "); int batt = scanner.nextInt();
 
                         bikes.add(new ElectricBike(eId, eModel, ePrice, true, batt));
@@ -73,7 +87,21 @@ public class Main {
                         }
 
                         System.out.print("Enter Model: "); String mModel = scanner.nextLine();
-                        System.out.print("Price/hr: "); double mPrice = scanner.nextDouble();
+                        double mPrice;
+                        while (true) {
+                            System.out.print("Price/hr: ");
+                            if (scanner.hasNextDouble()) {
+                                mPrice = scanner.nextDouble();
+                                if (mPrice > 0) {
+                                    break;
+                                } else {
+                                    System.out.println("[ERROR] Price must be a positive value!");
+                                }
+                            } else {
+                                System.out.println("[ERROR] Invalid input! Please enter a number for the price.");
+                                scanner.next();
+                            }
+                        }
                         System.out.print("Number of Gears: "); int gears = scanner.nextInt();
 
                         bikes.add(new ManualBike(mId, mModel, mPrice, true, gears));
@@ -139,9 +167,23 @@ public class Main {
                         boolean uFound = false;
                         for (Bike b : bikes) {
                             if (b.getBikeID().equalsIgnoreCase(uId)) {
-                                System.out.print("Current Price: " + b.getPricePerHour() + " | Enter New Price: ");
-                                b.setPricePerHour(scanner.nextDouble());
-                                System.out.println("Price updated successfully!");
+                                double newPrice;
+                                while (true) {
+                                    System.out.print("Enter New Price (Current: Rs." + b.getPricePerHour() + "): ");
+                                    if (scanner.hasNextDouble()) {
+                                        newPrice = scanner.nextDouble();
+                                        if (newPrice > 0) {
+                                            b.setPricePerHour(newPrice);
+                                            System.out.println("Price updated successfully!");
+                                            break;
+                                        } else {
+                                            System.out.println("[ERROR] Price must be a positive value!");
+                                        }
+                                    } else {
+                                        System.out.println("[ERROR] Invalid input! Please enter a number.");
+                                        scanner.next();
+                                    }
+                                }
                                 uFound = true;
                                 break;
                             }
