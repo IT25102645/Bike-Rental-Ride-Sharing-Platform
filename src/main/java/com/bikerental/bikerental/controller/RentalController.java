@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Controller
@@ -25,25 +26,63 @@ public class RentalController {
                                @RequestParam String rentalType,
                                @RequestParam String endDate,
                                Model model) {
+
         if (!FileHandler.isBikeAvailable(bikeId)) {
             model.addAttribute("error", "Bike is not available!");
             return "rentals/rent-bike";
         }
-        String id = "R-" + UUID.randomUUID().toString().substring(0, 6);
-        String start = LocalDate.now().toString();
 
-        Rental rental = rentalType.equals("hourly")
-                ? new HourlyRental(id, userId, bikeId, start, endDate, "ACTIVE")
-                : new DailyRental(id, userId, bikeId, start, endDate, "ACTIVE");
+        String id = "R-" + UUID.randomUUID().toString().substring(0, 6);
+        String startDate = LocalDate.now().toString();
+
+        // Calculate duration in days between start and end
+        LocalDate start = LocalDate.now();
+        LocalDate end = LocalDate.parse(endDate);
+        int duration = (int) ChronoUnit.DAYS.between(start, end);
+        if (duration <= 0) duration = 1; // minimum 1
+
+        // Polymorphism: correct subclass chosen based on rental type
+        Rental rental;
+        if (rentalType.equals("hourly")) {
+            rental = new HourlyRental(id, userId, bikeId, startDate, endDate, "ACTIVE");
+        } else {
+            rental = new DailyRental(id, userId, bikeId, startDate, endDate, "ACTIVE");
+        }
+
+        // Calculate fee using polymorphic method and save it
+        double fee = rental.calculateFee(duration);
+        rental.setTotalFee(fee);
 
         FileHandler.writeRental(rental.toFileString());
         return "redirect:/rental/view";
     }
 
-    // READ
+    // READ - View all rentals
     @GetMapping("/view")
     public String viewRentals(Model model) {
         model.addAttribute("rentals", FileHandler.readAllRentals());
+        return "rentals/rental-history";
+    }
+
+    // READ - Search rentals by User ID
+    @GetMapping("/search")
+    public String searchRentals(@RequestParam(required = false) String userId,
+                                Model model) {
+        List<String[]> allRentals = FileHandler.readAllRentals();
+
+        if (userId != null && !userId.trim().isEmpty()) {
+            List<String[]> filtered = new ArrayList<>();
+            for (String[] r : allRentals) {
+                if (r[1].equalsIgnoreCase(userId.trim())) {
+                    filtered.add(r);
+                }
+            }
+            model.addAttribute("rentals", filtered);
+            model.addAttribute("searchId", userId);
+        } else {
+            model.addAttribute("rentals", allRentals);
+        }
+
         return "rentals/rental-history";
     }
 
@@ -61,7 +100,10 @@ public class RentalController {
                                @RequestParam String endDate) {
         List<String[]> rentals = FileHandler.readAllRentals();
         for (String[] r : rentals) {
-            if (r[0].equals(rentalId)) { r[4] = endDate; r[5] = status; }
+            if (r[0].equals(rentalId)) {
+                r[4] = endDate;
+                r[5] = status;
+            }
         }
         FileHandler.rewriteFile(rentals);
         return "redirect:/rental/view";
