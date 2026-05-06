@@ -56,16 +56,17 @@ public class Main {
                             System.out.print("Price/hr: ");
                             if (scanner.hasNextDouble()) {
                                 ePrice = scanner.nextDouble();
-                                if (ePrice > 0) {
+
+                                if (bikeService.isValidPrice(ePrice)) {
                                     break;
-                                } else {
-                                    System.out.println("[ERROR] Price must be a positive value!");
                                 }
                             } else {
+
                                 System.out.println("[ERROR] Invalid input! Please enter a number for the price.");
                                 scanner.next();
                             }
                         }
+
                         System.out.print("Battery Capacity (Ah/Wh): "); int batt = scanner.nextInt();
 
                         bikes.add(new ElectricBike(eId, eModel, ePrice, true, batt));
@@ -92,16 +93,15 @@ public class Main {
                             System.out.print("Price/hr: ");
                             if (scanner.hasNextDouble()) {
                                 mPrice = scanner.nextDouble();
-                                if (mPrice > 0) {
+                                if (bikeService.isValidPrice(mPrice)) {
                                     break;
-                                } else {
-                                    System.out.println("[ERROR] Price must be a positive value!");
                                 }
                             } else {
                                 System.out.println("[ERROR] Invalid input! Please enter a number for the price.");
                                 scanner.next();
                             }
                         }
+
                         System.out.print("Number of Gears: "); int gears = scanner.nextInt();
 
                         bikes.add(new ManualBike(mId, mModel, mPrice, true, gears));
@@ -164,31 +164,35 @@ public class Main {
                     case 6: // Update
                         System.out.print("Enter ID to Update Price: ");
                         String uId = scanner.nextLine();
-                        boolean uFound = false;
+                        Bike foundBike = null;
                         for (Bike b : bikes) {
                             if (b.getBikeID().equalsIgnoreCase(uId)) {
-                                double newPrice;
-                                while (true) {
-                                    System.out.print("Enter New Price (Current: Rs." + b.getPricePerHour() + "): ");
-                                    if (scanner.hasNextDouble()) {
-                                        newPrice = scanner.nextDouble();
-                                        if (newPrice > 0) {
-                                            b.setPricePerHour(newPrice);
-                                            System.out.println("Price updated successfully!");
-                                            break;
-                                        } else {
-                                            System.out.println("[ERROR] Price must be a positive value!");
-                                        }
-                                    } else {
-                                        System.out.println("[ERROR] Invalid input! Please enter a number.");
-                                        scanner.next();
-                                    }
-                                }
-                                uFound = true;
+                                foundBike = b;
                                 break;
                             }
                         }
-                        if (!uFound) System.out.println("Bike ID not found!");
+
+                        if (foundBike == null) {
+                            System.out.println("Bike ID not found!");
+                        } else {
+
+                            while (true) {
+                                System.out.print("Enter New Price (Current: Rs." + foundBike.getPricePerHour() + "): ");
+                                if (scanner.hasNextDouble()) {
+                                    double nPrice = scanner.nextDouble();
+
+
+                                    if (bikeService.updateBikePrice(bikes, uId, nPrice)) {
+                                        System.out.println("Price updated successfully!");
+                                        break;
+                                    }
+                                } else {
+
+                                    System.out.println("[ERROR] Invalid input! Please enter a number.");
+                                    scanner.next();
+                                }
+                            }
+                        }
                         break;
 
                     case 7: // Save and Exit

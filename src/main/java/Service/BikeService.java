@@ -44,5 +44,29 @@ import java.util.List;
             }
             return bikeList;
         }
+
+        public boolean isValidPrice(double price) {
+            if (price <= 0) {
+                System.out.println("[ERROR] Price must be a positive value!");
+                return false;
+            }
+            return true;
+        }
+
+        public boolean updateBikePrice(List<Bike> bikes, String id, double newPrice) {
+            if (!isValidPrice(newPrice)) {
+                return false;
+            }
+
+            for (Bike b : bikes) {
+                if (b.getBikeID().equalsIgnoreCase(id)) {
+                    b.setPricePerHour(newPrice);
+                    saveBikes(bikes);
+                    return true;
+                }
+            }
+            System.out.println("Bike ID not found!");
+            return false;
+        }
     }
 
