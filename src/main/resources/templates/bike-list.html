@@ -33,12 +33,13 @@
         </div>
     </div>
 
-    <div class="row g-4">
-        <div th:each="bike : ${bikes}" class="col-lg-4 col-md-6 animate__animated animate__zoomIn">
+    <h3 class="text-white mb-4 border-bottom pb-2">⚡ Electric Bikes</h3>
+    <div class="row g-4 mb-5">
+        <div th:each="bike : ${bikes}" th:if="${bike.class.simpleName == 'ElectricBike'}" class="col-lg-4 col-md-6 animate__animated animate__zoomIn">
             <div class="card bike-card h-100 p-3 text-center shadow">
 
                 <div class="mb-3 d-flex justify-content-center align-items-center" style="height: 100px;">
-                    <img th:src="${bike.class.simpleName == 'ElectricBike'} ? 'https://img.icons8.com/fluency/96/electric-bike.png' : 'https://img.icons8.com/fluency/96/bicycle.png'"
+                    <img src="https://img.icons8.com/fluency/96/electric-bike.png"
                          alt="Bike Icon" style="width: 80px;">
                 </div>
 
@@ -47,8 +48,7 @@
                 <h5 class="text-primary fw-bold" th:text="'Rs.' + ${bike.pricePerHour} + '/hr'">Price</h5>
 
                 <p class="small text-secondary mb-2">
-                    <span th:if="${bike.class.simpleName == 'ElectricBike'}" th:text="'Battery: ' + ${bike.batteryCapacity} + ' Ah'"></span>
-                    <span th:if="${bike.class.simpleName == 'ManualBike'}" th:text="'Gears: ' + ${bike.numberOfGears}"></span>
+                    <span th:text="'Battery: ' + ${bike.batteryCapacity} + ' Ah'"></span>
                 </p>
 
                 <div class="mt-2">
@@ -58,7 +58,37 @@
 
                 <div class="mt-4 d-flex justify-content-center gap-2">
                     <a th:href="@{/edit/{id}(id=${bike.bikeID})}" class="btn btn-sm btn-warning px-3 rounded-pill fw-bold">Edit Details</a>
+                    <a th:href="@{/delete/{id}(id=${bike.bikeID})}" class="btn btn-sm btn-outline-danger px-3 rounded-pill">Remove Bike</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <h3 class="text-white mb-4 border-bottom pb-2">🚲 Manual Bikes</h3>
+    <div class="row g-4">
+        <div th:each="bike : ${bikes}" th:if="${bike.class.simpleName == 'ManualBike'}" class="col-lg-4 col-md-6 animate__animated animate__zoomIn">
+            <div class="card bike-card h-100 p-3 text-center shadow">
+
+                <div class="mb-3 d-flex justify-content-center align-items-center" style="height: 100px;">
+                    <img src="https://img.icons8.com/fluency/96/bicycle.png"
+                         alt="Bike Icon" style="width: 80px;">
+                </div>
+
+                <h4 class="fw-bold text-dark mb-1" th:text="${bike.model}">Model</h4>
+                <p class="text-muted small mb-2" th:text="'ID: ' + ${bike.bikeID}">ID</p>
+                <h5 class="text-primary fw-bold" th:text="'Rs.' + ${bike.pricePerHour} + '/hr'">Price</h5>
+
+                <p class="small text-secondary mb-2">
+                    <span th:text="'Gears: ' + ${bike.numberOfGears}"></span>
+                </p>
+
+                <div class="mt-2">
+                    <span th:class="${bike.isAvailable ? 'badge bg-success' : 'badge bg-danger'}"
+                          th:text="${bike.isAvailable ? 'Available' : 'Not Available'}"></span>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-center gap-2">
+                    <a th:href="@{/edit/{id}(id=${bike.bikeID})}" class="btn btn-sm btn-warning px-3 rounded-pill fw-bold">Edit Details</a>
                     <a th:href="@{/delete/{id}(id=${bike.bikeID})}" class="btn btn-sm btn-outline-danger px-3 rounded-pill">Remove Bike</a>
                 </div>
             </div>
