@@ -13,10 +13,14 @@
 <div class="container text-center animate__animated animate__fadeIn">
   <h1 class="display-3 mb-4 fw-bold">🔍 Quick Find</h1>
   <p class="mb-5 text-info">Instant results from our inventory</p>
-  <div class="input-group mb-4 px-3 w-75 mx-auto">
-    <input type="text" class="form-control search-bar" placeholder="Enter Bike ID here...">
-    <button class="btn btn-primary px-4 rounded-pill ms-2 shadow fw-bold">SEARCH</button>
-  </div>
+
+  <form action="/search-results" method="get">
+    <div class="input-group mb-4 px-3 w-75 mx-auto">
+      <input type="text" name="id" class="form-control search-bar" placeholder="Enter Bike ID here..." required>
+      <button type="submit" class="btn btn-primary px-4 rounded-pill ms-2 shadow fw-bold">SEARCH</button>
+    </div>
+  </form>
+
   <a href="/bikes" class="btn btn-outline-light rounded-pill px-4">Back to Dashboard</a>
 </div>
 </body>

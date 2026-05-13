@@ -90,4 +90,26 @@ public class BikeController {
         bikeService.saveBikes(bikes);
         return "redirect:/bikes";
     }
+    // 9. Search Results Logic
+    @GetMapping("/search-results")
+    public String searchBike(@RequestParam String id, Model model) {
+        List<Bike> bikes = bikeService.loadBikes();
+
+        Bike foundBike = null;
+        for (Bike b : bikes) {
+            if (b.getBikeID().equalsIgnoreCase(id)) {
+                foundBike = b;
+                break;
+            }
+        }
+
+        if (foundBike != null) {
+
+            model.addAttribute("bikes", List.of(foundBike));
+            return "bike-list";
+        } else {
+
+            return "redirect:/search?error=Bike ID Not Found";
+        }
+    }
 }
