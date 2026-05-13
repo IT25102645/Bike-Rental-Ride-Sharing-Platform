@@ -1,0 +1,207 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+    color: #333;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+h1 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #1a1a2e;
+}
+.form-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.form-group {
+    margin-bottom: 18px;
+}
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #555;
+}
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.btn-primary {
+    background: #4361ee;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.btn-primary:hover {
+    background: #3451d1;
+}
+.btn-secondary {
+    background: #f0f0f0;
+    color: #555;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+.star-rating .star {
+    font-size: 28px;
+    cursor: pointer;
+    color: #ccc;
+}
+.star-rating .star.active {
+    color: #f4a011;
+}
+.message {
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.message.success { color: #2ecc71; }
+.message.error { color: #e74c3c; }
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.filter-btn {
+    padding: 8px 20px;
+    border: 1px solid #4361ee;
+    border-radius: 20px;
+    background: transparent;
+    color: #4361ee;
+    cursor: pointer;
+    font-size: 14px;
+}
+.filter-btn.active, .filter-btn:hover {
+    background: #4361ee;
+    color: #fff;
+}
+.review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+}
+.review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.review-card .stars {
+    color: #f4a011;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+.review-card .username {
+    font-weight: 600;
+    font-size: 15px;
+}
+.type-badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+    margin-left: 8px;
+}
+.badge-bike { background: #e8f0fe; color: #4361ee; }
+.badge-ride { background: #e8fef0; color: #2ecc71; }
+.review-card .comment {
+    margin-top: 8px;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.review-card .meta {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #aaa;
+}
+.admin-table-wrap {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    overflow-x: auto;
+}
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.admin-table th {
+    background: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+    font-size: 13px;
+    color: #888;
+    border-bottom: 2px solid #eee;
+}
+.admin-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    vertical-align: top;
+}
+.btn-edit {
+    background: #fff3cd;
+    color: #856404;
+    border: none;
+    padding: 5px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-right: 6px;
+}
+.btn-delete {
+    background: #fde8e8;
+    color: #c0392b;
+    border: none;
+    padding: 5px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+.modal-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    width: 420px;
+}
+.modal-content h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
