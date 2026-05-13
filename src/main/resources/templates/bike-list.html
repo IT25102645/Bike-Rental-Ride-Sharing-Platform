@@ -53,11 +53,13 @@
 
                 <div class="mt-2">
                     <span th:class="${bike.isAvailable ? 'badge bg-success' : 'badge bg-danger'}"
-                          th:text="${bike.isAvailable ? 'Available' : 'Occupied'}"></span>
+                          th:text="${bike.isAvailable ? 'Available' : 'Not Available'}"></span>
                 </div>
 
-                <div class="mt-4">
-                    <a th:href="@{/delete/{id}(id=${bike.bikeID})}" class="btn btn-sm btn-outline-danger px-4 rounded-pill">Remove Bike</a>
+                <div class="mt-4 d-flex justify-content-center gap-2">
+                    <a th:href="@{/edit/{id}(id=${bike.bikeID})}" class="btn btn-sm btn-warning px-3 rounded-pill fw-bold">Edit Details</a>
+
+                    <a th:href="@{/delete/{id}(id=${bike.bikeID})}" class="btn btn-sm btn-outline-danger px-3 rounded-pill">Remove Bike</a>
                 </div>
             </div>
         </div>

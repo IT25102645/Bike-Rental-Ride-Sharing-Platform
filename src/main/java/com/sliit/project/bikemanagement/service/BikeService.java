@@ -49,13 +49,16 @@ public class BikeService {
         return true;
     }
 
-    public boolean updateBikePrice(List<Bike> bikes, String id, double newPrice) {
+
+    public boolean updateBikeDetails(List<Bike> bikes, String id, String newModel, double newPrice, boolean availability) {
         if (!isValidPrice(newPrice)) {
             return false;
         }
         for (Bike b : bikes) {
             if (b.getBikeID().equalsIgnoreCase(id)) {
+                b.setModel(newModel);
                 b.setPricePerHour(newPrice);
+                b.setAvailable(availability);
                 saveBikes(bikes);
                 return true;
             }

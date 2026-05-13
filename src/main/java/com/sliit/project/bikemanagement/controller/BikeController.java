@@ -68,17 +68,30 @@ public class BikeController {
         return "search-bike";
     }
 
-    // 6. Update Price Page
-    @GetMapping("/edit")
-    public String showEditForm() {
-        return "update-price";
+    // 6. Update Bike Page 
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable String id, Model model) {
+        List<Bike> bikes = bikeService.loadBikes();
+        Bike foundBike = bikes.stream()
+                .filter(b -> b.getBikeID().equalsIgnoreCase(id))
+                .findFirst()
+                .orElse(null);
+
+        if (foundBike != null) {
+            model.addAttribute("bike", foundBike);
+            return "update-bike";
+        }
+        return "redirect:/bikes?error=BikeNotFound";
     }
 
-    // 7. Update Price Logic
-    @PostMapping("/update-price")
-    public String updatePrice(@RequestParam String id, @RequestParam double price) {
+    // 7. Update Bike Logic
+    @PostMapping("/update-bike")
+    public String updateBike(@RequestParam String id,
+                             @RequestParam String model,
+                             @RequestParam double price,
+                             @RequestParam boolean isAvailable) {
         List<Bike> bikes = bikeService.loadBikes();
-        bikeService.updateBikePrice(bikes, id, price);
+        bikeService.updateBikeDetails(bikes, id, model, price, isAvailable);
         return "redirect:/bikes";
     }
 
