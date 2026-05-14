@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Bike | Premium Fleet</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+            url('https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; min-height: 100vh; display: flex; align-items: center;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px; padding: 50px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); color: white; width: 100%; max-width: 550px; margin: auto;
+        }
+        .form-control { background: rgba(255,255,255,0.15); border: none; color: white; border-radius: 10px; }
+        .btn-submit { background: linear-gradient(to right, #3a7bd5, #00d2ff); border: none; border-radius: 50px; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="glass-card animate__animated animate__fadeInDown">
+    <h2 class="text-center mb-4 fw-bold">🚲 Register New Bike</h2>
+
+    <div th:if="${param.error}" class="alert alert-danger animate__animated animate__shakeX text-center mb-4"
+         style="background: rgba(255, 71, 87, 0.2); border: 1px solid #ff4757; color: white; border-radius: 10px;">
+        ⚠️ <span th:text="${param.error}">Error Message</span>
+    </div>
+
+    <form action="/save-bike" method="post">
+        <div class="mb-3"><label class="form-label">Bike ID</label><input type="text" name="bikeID" class="form-control" placeholder="B-001" required></div>
+        <div class="mb-3"><label class="form-label">Model Name</label><input type="text" name="model" class="form-control" placeholder="Mountain Rider" required></div>
+        <div class="mb-3"><label class="form-label">Hourly Rate (Rs.)</label><input type="number" step="0.01" name="pricePerHour" class="form-control" required></div>
+        <div class="row">
+            <div class="col-md-6 mb-3"><label class="form-label">Type</label><select name="type" class="form-control"><option value="electric">Electric</option><option value="manual">Manual</option></select></div>
+            <div class="col-md-6 mb-3"><label class="form-label">Extra (Ah/Gears)</label><input type="number" name="extraInfo" class="form-control"></div>
+        </div>
+        <button type="submit" class="btn btn-submit w-100 py-3 mt-3">REGISTER BIKE</button>
+        <a href="/bikes" class="btn btn-link w-100 text-white mt-2 small">Back to Dashboard</a>
+    </form>
+</div>
+</body>
+</html>
