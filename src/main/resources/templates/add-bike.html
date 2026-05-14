@@ -22,6 +22,12 @@
 <body>
 <div class="glass-card animate__animated animate__fadeInDown">
     <h2 class="text-center mb-4 fw-bold">🚲 Register New Bike</h2>
+
+    <div th:if="${param.error}" class="alert alert-danger animate__animated animate__shakeX text-center mb-4"
+         style="background: rgba(255, 71, 87, 0.2); border: 1px solid #ff4757; color: white; border-radius: 10px;">
+        ⚠️ <span th:text="${param.error}">Error Message</span>
+    </div>
+
     <form action="/save-bike" method="post">
         <div class="mb-3"><label class="form-label">Bike ID</label><input type="text" name="bikeID" class="form-control" placeholder="B-001" required></div>
         <div class="mb-3"><label class="form-label">Model Name</label><input type="text" name="model" class="form-control" placeholder="Mountain Rider" required></div>
